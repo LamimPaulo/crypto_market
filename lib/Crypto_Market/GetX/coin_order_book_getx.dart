@@ -31,9 +31,9 @@ class OrderBookController extends GetxController {
       {required Coin coinData, required String listedCoinOrderBookUrl}) async {
     /// if coin is listed then connect to binance server,
     /// else get order books from listed coin url
-    // !coinData.coinListed
-    //     ? await connectToBinanceServer(coinData)
-    await getListedCoinOrderBook(listedCoinOrderBookUrl);
+    !coinData.coinListed
+        ? await connectToBinanceServer(coinData)
+        : await getListedCoinOrderBook(listedCoinOrderBookUrl);
 
     /// update UI
     update();
@@ -64,6 +64,7 @@ class OrderBookController extends GetxController {
 
           /// insert an item into
           /// coin order book buy list
+          coinOrderBookBuyList.clear();
           coinOrderBookBuyList.insert(
               i,
               OrderVolume(
@@ -83,6 +84,7 @@ class OrderBookController extends GetxController {
 
           /// insert an item into
           /// coin order book sell list
+          coinOrderBookSellList.clear();
           coinOrderBookSellList.insert(
               i,
               OrderVolume(
