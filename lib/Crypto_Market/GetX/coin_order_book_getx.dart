@@ -64,7 +64,7 @@ class OrderBookController extends GetxController {
 
           /// insert an item into
           /// coin order book buy list
-          coinOrderBookBuyList.clear();
+          // coinOrderBookBuyList.clear();
           coinOrderBookBuyList.insert(
               i,
               OrderVolume(
@@ -84,7 +84,7 @@ class OrderBookController extends GetxController {
 
           /// insert an item into
           /// coin order book sell list
-          coinOrderBookSellList.clear();
+          // coinOrderBookSellList.clear();
           coinOrderBookSellList.insert(
               i,
               OrderVolume(
@@ -195,7 +195,9 @@ class OrderBookController extends GetxController {
     var response = await http.get(Uri.parse(listedCoinOrderBookUrl));
     var data = json.decode(response.body);
 
-    print(data);
+    // print(data);
+    coinOrderBookSellList.clear();
+    coinOrderBookBuyList.clear();
 
     /// buys list
     List<double> buys = [];
