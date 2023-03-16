@@ -195,6 +195,8 @@ class OrderBookController extends GetxController {
     var response = await http.get(Uri.parse(listedCoinOrderBookUrl));
     var data = json.decode(response.body);
 
+    print(data);
+
     /// buys list
     List<double> buys = [];
 
