@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:developer' as dev;
 import 'dart:math';
@@ -407,9 +406,7 @@ import '../Model/coin_order_volume_model.dart';
 //
 // }
 
-
 class OrderBook extends StatelessWidget {
-
   final Coin coinData;
   final String listedCoinOrderBookUrl;
   final double inrRate;
@@ -423,101 +420,109 @@ class OrderBook extends StatelessWidget {
     this.itemCount = 20,
   }) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
-
     OrderBookController.to.itemCount = itemCount;
-    OrderBookController.to.getOrderBook(coinData: coinData, listedCoinOrderBookUrl: listedCoinOrderBookUrl);
+    OrderBookController.to.getOrderBook(
+        coinData: coinData, listedCoinOrderBookUrl: listedCoinOrderBookUrl);
 
     final height = MediaQuery.of(context).size.height;
     double mediaQuery = MediaQuery.of(context).size.width / 2.2;
-    return GetBuilder<OrderBookController>(
-        builder: (_) {
-          return SingleChildScrollView(
-            child: Column(
+    return GetBuilder<OrderBookController>(builder: (_) {
+      return SingleChildScrollView(
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 12.0),
-                      child: Text(
-                        "Volume",
-                        style: TextStyle(
-                          color: Theme.of(context).textTheme.bodyText2!.color,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 15,
-                        ),
-                      ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 12.0),
+                  child: Text(
+                    "Volume",
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.bodyText2!.color,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15,
                     ),
-                    Text(
-                      "Price",
-                      style: TextStyle(
-                        color: Theme.of(context).textTheme.bodyText2!.color,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 15,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10.0),
-                      child: Text(
-                        "Volume",
-                        style: TextStyle(
-                          color: Theme.of(context).textTheme.bodyText2!.color,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 15,
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-                SizedBox(height: height * 0.01),
-
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                      width: mediaQuery,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        primary: false,
-                        reverse: true,
-                        padding: EdgeInsets.zero,
-                        itemCount: OrderBookController.to.coinOrderBookBuyList.length < itemCount ? OrderBookController.to.coinOrderBookBuyList.length : itemCount,
-                        itemBuilder: (BuildContext ctx, int i) {
-                          return _buyAmount(context, mediaQuery, OrderBookController.to.coinOrderBookBuyList[i]);
-                        },
-                      ),
+                Text(
+                  "Preço",
+                  style: TextStyle(
+                    color: Theme.of(context).textTheme.bodyText2!.color,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: Text(
+                    "Volume",
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.bodyText2!.color,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15,
                     ),
-                    const SizedBox(width: 2,),
-                    SizedBox(
-                      width: mediaQuery,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        primary: false,
-                        reverse: true,
-                        padding: EdgeInsets.zero,
-                        itemCount: OrderBookController.to.coinOrderBookSellList.length < itemCount ? OrderBookController.to.coinOrderBookSellList.length : itemCount,
-                        itemBuilder: (BuildContext ctx, int i) {
-                          return _amountSell(context, mediaQuery, OrderBookController.to.coinOrderBookSellList[i]);
-                        },
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ],
             ),
-          );
-        }
-    );
+            SizedBox(height: height * 0.01),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  width: mediaQuery,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    primary: false,
+                    reverse: true,
+                    padding: EdgeInsets.zero,
+                    itemCount:
+                        OrderBookController.to.coinOrderBookBuyList.length <
+                                itemCount
+                            ? OrderBookController.to.coinOrderBookBuyList.length
+                            : itemCount,
+                    itemBuilder: (BuildContext ctx, int i) {
+                      return _buyAmount(context, mediaQuery,
+                          OrderBookController.to.coinOrderBookBuyList[i]);
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  width: 2,
+                ),
+                SizedBox(
+                  width: mediaQuery,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    primary: false,
+                    reverse: true,
+                    padding: EdgeInsets.zero,
+                    itemCount: OrderBookController
+                                .to.coinOrderBookSellList.length <
+                            itemCount
+                        ? OrderBookController.to.coinOrderBookSellList.length
+                        : itemCount,
+                    itemBuilder: (BuildContext ctx, int i) {
+                      return _amountSell(context, mediaQuery,
+                          OrderBookController.to.coinOrderBookSellList[i]);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    });
   }
 
   Widget _buyAmount(BuildContext context, double width, item) {
-    double price = double.parse(item.price.isNotEmpty ? item.price : '0.0') * inrRate;
+    double price =
+        double.parse(item.price.isNotEmpty ? item.price : '0.0') * inrRate;
 
     return Stack(
       children: <Widget>[
@@ -525,7 +530,10 @@ class OrderBook extends StatelessWidget {
           alignment: Alignment.centerRight,
           child: Container(
             color: Colors.green.withOpacity(0.2),
-            width: width * double.parse(item.percent.isNotEmpty ? item.percent : '0.0'), // here you can define your percentage of progress, 0.2 = 20%, 0.3 = 30 % .....
+            width: width *
+                double.parse(item.percent.isNotEmpty
+                    ? item.percent
+                    : '0.0'), // here you can define your percentage of progress, 0.2 = 20%, 0.3 = 30 % .....
             height: 25,
           ),
         ),
@@ -535,7 +543,6 @@ class OrderBook extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-
               SingleChildScrollView(
                 child: SizedBox(
                   width: width * 0.48,
@@ -543,7 +550,8 @@ class OrderBook extends StatelessWidget {
                     item.value.toString(),
                     maxLines: 1,
                     textAlign: TextAlign.start,
-                    style: TextStyle(fontSize: 12.0,
+                    style: TextStyle(
+                        fontSize: 12.0,
                         color: Theme.of(context).textTheme.bodyText1!.color),
                   ),
                 ),
@@ -564,15 +572,16 @@ class OrderBook extends StatelessWidget {
                   ),
                 ),
               ),
-            ],),
+            ],
+          ),
         ),
-
       ],
     );
   }
 
   Widget _amountSell(BuildContext context, double width, item) {
-    double price = double.parse(item.price.isNotEmpty ? item.price : '0.0') * inrRate;
+    double price =
+        double.parse(item.price.isNotEmpty ? item.price : '0.0') * inrRate;
 
     return Stack(
       children: <Widget>[
@@ -611,16 +620,16 @@ class OrderBook extends StatelessWidget {
                   ),
                 ),
               ),
-
-            ],),
+            ],
+          ),
         ),
         Container(
           color: Colors.redAccent.withOpacity(0.2),
-          width: width * double.parse(item.percent.isNotEmpty ? item.percent : '1.0'),
+          width: width *
+              double.parse(item.percent.isNotEmpty ? item.percent : '1.0'),
           height: 25,
         ),
       ],
     );
   }
-
 }
